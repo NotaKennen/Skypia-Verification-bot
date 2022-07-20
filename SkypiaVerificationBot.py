@@ -147,7 +147,7 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
 
 
 
-bot.run('OTkwMjMxMjUyNDQxMzcwNjM0.GJWcAZ.uYOWbp9XB8rVeM4VlkieshALDg_nlifGDTWblE')
+bot.run('token')
 
 # Bot made by Kju#6300 (aka Memarios)
 
