@@ -4,6 +4,7 @@ from discord.ext import commands
 from discord.utils import get
 import praw
 from datetime import datetime
+from secrets import secrets
 
 forceconfig = True
 
@@ -153,7 +154,8 @@ async def github(ctx, exhelp: str):
     ctx.send("https://github.com/NotaKennen/Skypia-Verification-bot")
 
 
-bot.run('token')
+
+bot.run(secrets.get('dtoken'))
 
 # Bot made by Kju#6300 (aka Memarios)
 
