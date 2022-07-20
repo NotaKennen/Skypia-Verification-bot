@@ -151,7 +151,7 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
 
 @bot.command(pass_context=True)
 async def github(ctx):
-    ctx.send("https://github.com/NotaKennen/Skypia-Verification-bot")
+    await ctx.send("https://github.com/NotaKennen/Skypia-Verification-bot")
 
 
 
