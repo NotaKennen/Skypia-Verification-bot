@@ -148,6 +148,10 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
 
     print(ctx.author, "has been verified")
 
+@bot.command(pass_context=True)
+async def github(ctx, exhelp: str):
+    ctx.send("https://github.com/NotaKennen/Skypia-Verification-bot")
+
 
 bot.run('token')
 
