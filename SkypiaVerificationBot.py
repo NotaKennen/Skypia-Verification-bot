@@ -149,9 +149,6 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
     print(ctx.author, "has been verified")
 
 
-
-
-
 bot.run('token')
 
 # Bot made by Kju#6300 (aka Memarios)
