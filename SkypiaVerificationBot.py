@@ -44,26 +44,6 @@ async def on_ready():
     print(bot.user.id)
     print('----------------------------------------------')
 
-@bot.command(pass_context=True)
-async def command(ctx, exhelp: str):
-    if exhelp == "echo":
-        await ctx.send("Command Echo: A command for admins to say things thru the bot")
-        await ctx.send("usage: +echo (message)")
-    elif exhelp == "ogecho":
-        await ctx.send("Command Ogcho: A command for OGs to say things thru the bot")
-        await ctx.send("usage: +ogecho (message)")
-    elif exhelp == "reddit":
-        await ctx.send("Command Reddit: A command that shows basic stats from a Reddit account")
-        await ctx.send("usage: +reddit (account name)")
-    elif exhelp == "verify":
-        await ctx.send("Command Verify: A command that automatically verifies a user")
-        await ctx.send("usage: +verify (gamertag) (age) (pingable (Y/N))")
-    elif exhelp == "github":
-        await ctx.send("Command Github: A command that tells you the bot's github page")
-        await ctx.send("usage: +github")
-    else:
-        await ctx.send("List of commands: echo, ogecho, reddit, verify")
-        await ctx.send("Type '+command (command)' for more info on a certain command")
 
 @bot.command(pass_context=True)
 async def reddit(ctx, redname: str):
@@ -91,20 +71,15 @@ async def reddit(ctx, redname: str):
 
     reddittotalkarma = redditor.comment_karma + redditor.link_karma
 
-    await ctx.send("The comment karma of " + redditor_name + " is : " +
-      str(redditor.comment_karma))
-
-    await ctx.send("The link karma of " + redditor_name + " is : " +
-      str(redditor.link_karma))
-
-    await ctx.send("The total karma of " + redditor_name + " is : " +
-      str(reddittotalkarma))
-
-    await ctx.send("The " + redditor_name + " account was created on : " +
-      str(datetime.fromtimestamp(unix_time)))
-
-    await ctx.send("Has " + redditor_name + " verified their email? : " +
-      str(redditor.has_verified_email))    
+    embed=discord.Embed(title="----------------------------------", color=0xffcd42)
+    embed.set_author(name="Reddit checker")
+    embed.add_field(name="Comment karma", value=redditor.comment_karma, inline=True)
+    embed.add_field(name="Link karma", value=redditor.link_karma, inline=True)
+    embed.add_field(name="Total karma", value=reddittotalkarma, inline=True)
+    embed.add_field(name="Account creation", value=str(datetime.fromtimestamp(unix_time)), inline=True)
+    embed.add_field(name="Verified email", value=redditor.has_verified_email, inline=True)
+    embed.add_field(name="Account name", value=redname, inline=True)
+    await ctx.send(embed=embed) 
 
 @bot.command(pass_context=True)
 @commands.has_role('Server Admin')
