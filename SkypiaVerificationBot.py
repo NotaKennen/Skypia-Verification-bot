@@ -44,6 +44,9 @@ async def command(ctx, exhelp: str):
     elif exhelp == "verify":
         await ctx.send("Command Verify: A command that automatically verifies a user")
         await ctx.send("usage: +verify (gamertag) (age) (pingable (Y/N))")
+    elif exhelp == "github":
+        await ctx.send("Command Github: A command that tells you the bot's github page")
+        await ctx.send("usage: +github")
     else:
         await ctx.send("List of commands: echo, ogecho, reddit, verify")
         await ctx.send("Type '+command (command)' for more info on a certain command")
@@ -147,7 +150,9 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
 
 
 
-bot.run('OTkwMjMxMjUyNDQxMzcwNjM0.GJWcAZ.uYOWbp9XB8rVeM4VlkieshALDg_nlifGDTWblE')
+
+
+bot.run('token')
 
 # Bot made by Kju#6300 (aka Memarios)
 
