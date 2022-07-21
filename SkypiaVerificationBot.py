@@ -127,16 +127,19 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
         await channel.send('New verification Log')
         await channel.send(embed=embed)
 
-    if botmode == 1:
-        #give roles
-        roleRealmMember = ctx.guild.get_role(862852289462534156)
-        roleVerified = ctx.guild.get_role(885061510592860160)
-        roleUnverified = ctx.guild.get_role(876510056051511346)
-        await ctx.author.remove_roles(roleUnverified)
-        await ctx.author.add_roles(roleRealmMember)
-        await ctx.author.add_roles(roleVerified)
-
     print(ctx.author, "has been verified")
+
+@bot.command(pass_context=True)
+@commands.has_role('Server Admin')
+async def verifyperson(ctx, nameandtag):
+    #give roles
+    roleRealmMember = ctx.guild.get_role(862852289462534156)
+    roleVerified = ctx.guild.get_role(885061510592860160)
+    roleUnverified = ctx.guild.get_role(876510056051511346)
+    await nameandtag.remove_roles(roleUnverified)
+    await nameandtag.author.add_roles(roleRealmMember)
+    await nameandtag.author.add_roles(roleVerified)
+
 
 @bot.command(pass_context=True)
 async def github(ctx):
