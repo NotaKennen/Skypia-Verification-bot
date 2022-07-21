@@ -46,6 +46,7 @@ async def on_ready():
 
 
 @bot.command(pass_context=True)
+@commands.has_role('Server Admin')
 async def reddit(ctx, redname: str):
     client_id = "leQG__oE7-L2YtNIiZB6Cg"
     client_secret = "jQNqmALaS2DFvo9fWTbOpNrhdVUJOQ"
