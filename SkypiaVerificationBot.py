@@ -121,6 +121,7 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
     embed.add_field(name="Pingable", value=wantspings, inline=True)
     embed.set_footer(text="Verification bot made by Memarios")
     await ctx.send(embed=embed)
+    await ctx.send("Is this correct?")
 
     if logmode == 1:
         channel = ctx.client.get_channel(990888240422723634)
@@ -129,21 +130,36 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
 
     print(ctx.author, "has been verified")
 
-@bot.command(pass_context=True)
-@commands.has_role('Server Admin')
-async def verifyperson(ctx, nameandtag):
-    #give roles
-    roleRealmMember = ctx.guild.get_role(862852289462534156)
-    roleVerified = ctx.guild.get_role(885061510592860160)
-    roleUnverified = ctx.guild.get_role(876510056051511346)
-    await nameandtag.remove_roles(roleUnverified)
-    await nameandtag.author.add_roles(roleRealmMember)
-    await nameandtag.author.add_roles(roleVerified)
 
 
 @bot.command(pass_context=True)
 async def github(ctx):
     await ctx.send("https://github.com/NotaKennen/Skypia-Verification-bot")
+
+@bot.command()
+@commands.has_role('Server Admin')
+async def addroles(ctx, member : discord.Member):
+    roleRealmMember = ctx.guild.get_role(862852289462534156)
+    roleVerified = ctx.guild.get_role(885061510592860160)
+    roleUnverified = ctx.guild.get_role(876510056051511346)
+    await member.remove_roles(roleUnverified)
+    await member.add_roles(roleRealmMember)
+    await member.add_roles(roleVerified)
+
+@bot.command()
+@commands.has_role('Server Admin')
+async def nick(ctx,  member : discord.Member, *, nickname: str):
+    await member.edit(nick=nickname)
+
+@bot.command()
+@commands.has_role('Server Admin')
+async def age(ctx, member : discord.Member, age: int):
+    role18 = ctx.guild.get_role(877361391491743815)
+    role1317 = ctx.guild.get_role(877361323053285436)
+    if age >= 18:
+        await member.add_roles(role18)
+    else:
+        await member.add_roles(role1317)
 
 
 
