@@ -54,9 +54,6 @@ async def on_ready():
 @bot.command(pass_context=True)
 @commands.has_role('Server Admin')
 async def reddit(ctx, redname: str):
-    print("redclientid", redclientid)
-    print("redsecret", redsecret)
-    print("redpass", redpassword)
     client_id = redclientid
     client_secret = redsecret
     username = "SkypiaBot"
