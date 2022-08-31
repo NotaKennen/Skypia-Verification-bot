@@ -22,16 +22,14 @@ from secrets import secrets
 forceconfig = True
 
 if forceconfig == True:
-    logmode = 0
+    logmode = 1
     botmode = 0
 
 print("Skypia Verification Bot")
 print("Coded by Memarios")
 print("----------------------------------------------")
 if forceconfig == False:
-    print("Botmode: (not coded yet, doesnt matter)")
-    botmode = input("0 = Semiauto, 1 = automatic - ")
-    print("Make logs: (not coded yet, doesnt matter)")
+    print("Log all verifications?")
     logmode = input("0 = Don't make logs, 1 = Make logs - ")
     print("----------------------------------------------")
 
@@ -122,15 +120,13 @@ async def verify(ctx, nickname: str, age: int, pingable: str):
     embed.set_footer(text="Verification bot made by Memarios")
     await ctx.send(embed=embed)
     await ctx.send("Is this correct?")
+    await ctx.send("@&862852490629611581")
 
     if logmode == 1:
-        channel = ctx.client.get_channel(990888240422723634)
-        await channel.send('New verification Log')
+        channel = bot.get_channel(878180311148662814)
         await channel.send(embed=embed)
 
     print(ctx.author, "has been verified")
-
-
 
 @bot.command(pass_context=True)
 async def github(ctx):
