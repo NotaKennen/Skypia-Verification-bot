@@ -50,6 +50,27 @@ async def on_ready():
     print(bot.user.id)
     print('----------------------------------------------')
 
+@bot.command()
+async def store(ctx, *, variable):
+    dictionary = {
+    "name": variable,
+    }
+    json_object = json.dumps(dictionary, indent=4)
+    with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json'), "w") as outfile:
+        outfile.write(json_object)
+
+@bot.command()
+async def config(ctx, config: str=None, state: str=None):
+    confstatehere = "Deez"
+    if config is None:
+        await ctx.send("Available config options: logmode")
+    elif config == "logmode":
+        if state == "True":
+            await ctx.send("Logmode set to true")
+        elif state == "False":
+            await ctx.send("Logmode set to false")
+        else:
+            await ctx.send("Setting Logmode has to be set to True or False")
 
 @bot.command(pass_context=True)
 @commands.has_role('Server Admin')
@@ -79,7 +100,7 @@ async def reddit(ctx, redname: str):
     reddittotalkarma = redditor.comment_karma + redditor.link_karma
 
     embed=discord.Embed(title="----------------------------------", color=0xffcd42)
-    embed.set_author(name="Reddit checker")
+    embed.set_author(name=redname)
     embed.add_field(name="Comment karma", value=redditor.comment_karma, inline=True)
     embed.add_field(name="Link karma", value=redditor.link_karma, inline=True)
     embed.add_field(name="Total karma", value=reddittotalkarma, inline=True)
@@ -101,54 +122,23 @@ async def ogecho(ctx, *, echos: str):
     await ctx.message.delete()
 
 @bot.command(pass_context=True)
-@commands.has_role('Non Realm Member')
-async def verify(ctx, nickname: str, age: int, pingable: str):
-    await ctx.send("Verifying")
-    await ctx.author.edit(nick=nickname)
-    role18 = ctx.guild.get_role(877361391491743815)
-    role1317 = ctx.guild.get_role(877361323053285436)
-    if age >= 18:
-        await ctx.author.add_roles(role18)
-    else:
-        await ctx.author.add_roles(role1317)
-    rolePingable = ctx.guild.get_role(878112584761495562)
-    wantspings = "Yes"
-    if pingable == "n":
-        await ctx.author.remove_roles(rolePingable)
-        wantspings = "No"
-    if pingable == "N":
-        await ctx.author.remove_roles(rolePingable)
-        wantspings = "No"
-    
-    # send embed
-    embed=discord.Embed(title="Verification Process", description="Verification info:", color=0x73ff4d)
-    embed.add_field(name="Gamertag", value=nickname, inline=True)
-    embed.add_field(name="Age", value=age, inline=True)
-    embed.add_field(name="Pingable", value=wantspings, inline=True)
-    embed.set_footer(text="Verification bot made by Memarios")
-    await ctx.send(embed=embed)
-    await ctx.send("Is this correct?")
-    await ctx.send("@&862852490629611581")
-
-    if logmode == 1:
-        channel = bot.get_channel(878180311148662814)
-        await channel.send(embed=embed)
-
-    print(ctx.author, "has been verified")
-
-@bot.command(pass_context=True)
 async def github(ctx):
     await ctx.send("https://github.com/NotaKennen/Skypia-Verification-bot")
 
 @bot.command()
 @commands.has_role('Server Admin')
-async def addroles(ctx, member : discord.Member):
+async def verify(ctx, member : discord.Member, age: str=None, pingable: str=None):
     roleRealmMember = ctx.guild.get_role(862852289462534156)
     roleVerified = ctx.guild.get_role(885061510592860160)
     roleUnverified = ctx.guild.get_role(876510056051511346)
     await member.remove_roles(roleUnverified)
     await member.add_roles(roleRealmMember)
     await member.add_roles(roleVerified)
+    await ctx.send("Verified!")
+    if age is None:
+        await ctx.send("You forgot to put the age, put it manually, I'm too lazy")
+    if pingable is None:
+        await ctx.send("You forgot to put the pingable, put it manually, I'm too lazy")
 
 @bot.command()
 @commands.has_role('Server Admin')
