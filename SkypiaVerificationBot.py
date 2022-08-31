@@ -18,8 +18,9 @@ from discord.utils import get
 import praw
 from datetime import datetime
 import json
+import os
 
-with open('C:/Users/hanse/Downloads/Code Projects/Skypia Verification bot/config.json') as f:
+with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json')) as f:
     data = json.load(f)
     token = data["TOKEN"]
     redpassword = data["redpassword"]
