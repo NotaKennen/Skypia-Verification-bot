@@ -17,7 +17,14 @@ from discord.ext import commands
 from discord.utils import get
 import praw
 from datetime import datetime
-from secrets import secrets
+import json
+
+with open('C:/Users/hanse/Downloads/Code Projects/Skypia Verification bot/config.json') as f:
+    data = json.load(f)
+    token = data["TOKEN"]
+    redpassword = data["redpassword"]
+    redsecret = data["redsecret"]
+    redclientid = data["redclientid"]
 
 forceconfig = True
 
@@ -46,10 +53,13 @@ async def on_ready():
 @bot.command(pass_context=True)
 @commands.has_role('Server Admin')
 async def reddit(ctx, redname: str):
-    client_id = "leQG__oE7-L2YtNIiZB6Cg"
-    client_secret = "jQNqmALaS2DFvo9fWTbOpNrhdVUJOQ"
+    print("redclientid", redclientid)
+    print("redsecret", redsecret)
+    print("redpass", redpassword)
+    client_id = redclientid
+    client_secret = redsecret
     username = "SkypiaBot"
-    password = "SkypiaMemmy"
+    password = redpassword
     user_agent = "SkypiaBot"
   
     # creating an authorized reddit instance
@@ -159,6 +169,6 @@ async def age(ctx, member : discord.Member, age: int):
 
 
 
-bot.run(secrets.get('dtoken'))
+bot.run(token)
 
 # Bot made by Kju#6300 (aka Memarios)
