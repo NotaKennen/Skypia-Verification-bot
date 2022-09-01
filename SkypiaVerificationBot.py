@@ -19,6 +19,7 @@ import praw
 from datetime import datetime
 import json
 import os
+import random
 
 with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/gitignorefiles/data.json')) as f:
     data = json.load(f)
@@ -168,10 +169,10 @@ async def age(ctx, member : discord.Member, age: int):
 @bot.command()
 async def register(ctx):
     person = {
-    "Money": "0",
-    "Card1": "0",
-    "Card2": "0",
-    "Card3": "0"
+    "Money": 0,
+    "Card1": 0,
+    "Card2": 0,
+    "Card3": 0
     }
     json_object = json.dumps(person, indent=1)
     with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
@@ -195,7 +196,7 @@ async def inv(ctx, member: discord.member = None):
     await ctx.send(embed=embed)
     
 @bot.command()
-async def buy(ctx, cardname: str = None):
+async def buycard(ctx, cardname: str = None):
     with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
             data = json.load(f)
             Money = data["Money"]
@@ -204,7 +205,7 @@ async def buy(ctx, cardname: str = None):
             Card3 = data["Card3"]
     Money = int(Money)
     if cardname is None:
-        await ctx.send("Available cards: Card1")
+        await ctx.send("Available cards: Card1, Card2, Card3 (placeholder names)")
     elif cardname == "Card1":
             if Money >= 500:
                 Money = Money-500
@@ -266,6 +267,45 @@ async def bal(ctx, member: discord.member = None):
         data = json.load(f)
         Cardmoney = data["Money"]
     await ctx.send(f"You have {Cardmoney}$")
+
+@bot.command()
+async def gamble(ctx, game: str=None, amount: int=None):
+    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
+            data = json.load(f)
+            Money = data["Money"]
+            Card1 = data["Card1"]
+            Card2 = data["Card2"]
+            Card3 = data["Card3"]
+    reward = 0
+    if Money >= amount:
+     if game is None:
+        await ctx.send("Available games: coinflip")
+     elif amount is None:
+        await ctx.send("You need to put in an amount!")
+     else:
+        if game == "coinflip":
+            chances = random.randint(0, 100)
+            if chances >= 50:
+                reward = amount
+                await ctx.send(f"You won {reward}$!")
+            else:
+                reward = reward - amount
+                await ctx.send(f"You lost {reward}$!")
+            Money = Money + reward
+        else:
+            await ctx.send(f'"{game}" is not a game!')
+    else:
+        await ctx.send("You don't have that much money!")
+    person = {
+    "Money": Money,
+    "Card1": Card1,
+    "Card2": Card2,
+    "Card3": Card3
+    }
+    json_object = json.dumps(person, indent=1)
+    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
+        outfile.write(json_object)
+    
 
 bot.run(token)
 
