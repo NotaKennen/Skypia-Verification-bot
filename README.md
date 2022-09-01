@@ -6,7 +6,7 @@ Skypia discord invite:
 https://discord.gg/kxmTqsHwZM
 
 If you want to copy the code:
-1. Change the channel/role id's on lines 110, 111, 116, 136, 148, 149, 150, 163, 164
+1. Change the channel/role id's on some of the lines 
 2. Fix line 23 so that it says where the following config file is
 3. Make a config.json file with the following code:
 
