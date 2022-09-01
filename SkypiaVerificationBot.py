@@ -27,19 +27,15 @@ with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/
     redsecret = data["redsecret"]
     redclientid = data["redclientid"]
 
-forceconfig = True
+data = None
 
-if forceconfig == True:
-    logmode = 1
-    botmode = 0
+with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json')) as f:
+    data = json.load(f)
+    logmode = data["logmodeconfig"]
 
 print("Skypia Verification Bot")
 print("Coded by Memarios")
 print("----------------------------------------------")
-if forceconfig == False:
-    print("Log all verifications?")
-    logmode = input("0 = Don't make logs, 1 = Make logs - ")
-    print("----------------------------------------------")
 
 bot = commands.Bot(command_prefix='+')
 
@@ -51,26 +47,33 @@ async def on_ready():
     print('----------------------------------------------')
 
 @bot.command()
-async def store(ctx, *, variable):
-    dictionary = {
-    "name": variable,
-    }
-    json_object = json.dumps(dictionary, indent=4)
-    with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json'), "w") as outfile:
-        outfile.write(json_object)
-
-@bot.command()
+@commands.has_role('Server Admin')
 async def config(ctx, config: str=None, state: str=None):
-    confstatehere = "Deez"
     if config is None:
         await ctx.send("Available config options: logmode")
     elif config == "logmode":
         if state == "True":
-            await ctx.send("Logmode set to true")
+            await ctx.send("Logmode set to True")
+            dictionary = {
+            "logmodeconfig": "True"
+            }
+            json_object = json.dumps(dictionary, indent=1)
+            with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json'), "w") as outfile:
+                outfile.write(json_object)
+
         elif state == "False":
-            await ctx.send("Logmode set to false")
+            await ctx.send("Logmode set to False")
+            dictionary = {
+            "logmodeconfig": "False"
+            }
+            json_object = json.dumps(dictionary, indent=1)
+            with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json'), "w") as outfile:
+                outfile.write(json_object)
+
         else:
             await ctx.send("Setting Logmode has to be set to True or False")
+    else:
+        await ctx.send("Invalid config option")
 
 @bot.command(pass_context=True)
 @commands.has_role('Server Admin')
@@ -135,10 +138,13 @@ async def verify(ctx, member : discord.Member, age: str=None, pingable: str=None
     await member.add_roles(roleRealmMember)
     await member.add_roles(roleVerified)
     await ctx.send("Verified!")
-    if age is None:
-        await ctx.send("You forgot to put the age, put it manually, I'm too lazy")
-    if pingable is None:
-        await ctx.send("You forgot to put the pingable, put it manually, I'm too lazy")
+    with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json')) as f:
+        data = json.load(f)
+        logmode = data["logmodeconfig"]
+    if logmode == "True":
+        channel = bot.get_channel(878180311148662814)
+        channel.send('Person ' , ctx.author, "Verified ", member)
+
 
 @bot.command()
 @commands.has_role('Server Admin')
