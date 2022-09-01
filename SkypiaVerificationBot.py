@@ -196,10 +196,66 @@ async def inv(ctx, member: discord.member = None):
     
 @bot.command()
 async def buy(ctx, cardname: str = None):
+    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
+            data = json.load(f)
+            Money = data["Money"]
+            Card1 = data["Card1"]
+            Card2 = data["Card2"]
+            Card3 = data["Card3"]
+    Money = int(Money)
     if cardname is None:
         await ctx.send("Available cards: Card1")
-    if cardname == "card1":
-        await ctx.send("Command not yet done -Memarios")
+    elif cardname == "Card1":
+            if Money >= 500:
+                Money = Money-500
+                Card1 = int(Card1)
+                Card1 = Card1 + 1
+                person = {
+                "Money": Money,
+                "Card1": Card1,
+                "Card2": Card2,
+                "Card3": Card3
+                }
+                json_object = json.dumps(person, indent=1)
+                with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
+                    outfile.write(json_object)
+                await ctx.send("Successfully bought 1 Card1")
+            else:
+                await ctx.send("Hey poor person! You need to get 500$ to buy this item.")
+    elif cardname == "Card2":
+            if Money >= 700:
+                Money = Money-700
+                Card2 = int(Card2)
+                Card2 = Card2 + 1
+                person = {
+                "Money": Money,
+                "Card1": Card1,
+                "Card2": Card2,
+                "Card3": Card3
+                }
+                json_object = json.dumps(person, indent=1)
+                with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
+                    outfile.write(json_object)
+                await ctx.send("Successfully bought 1 Card2")
+            else:
+                await ctx.send("Hey poor person! You need to get 700$ to buy this item.")
+    elif cardname == "Card3":
+            if Money >= 1000:
+                Money = Money-1000
+                Card3 = int(Card3)
+                Card3 = Card3 + 1
+                person = {
+                "Money": Money,
+                "Card1": Card1,
+                "Card2": Card2,
+                "Card3": Card3
+                }
+                json_object = json.dumps(person, indent=1)
+                with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
+                    outfile.write(json_object)
+                await ctx.send("Successfully bought 1 Card3")
+            else:
+                await ctx.send("Hey poor person! You need to get 1000$ to buy this item.")
     else: 
         await ctx.send("Not a card! Usage: +buy (card name)")
 
