@@ -143,7 +143,7 @@ async def verify(ctx, member : discord.Member, age: str=None, pingable: str=None
         logmode = data["logmodeconfig"]
     if logmode == "True":
         channel = bot.get_channel(878180311148662814)
-        channel.send('Person ' , ctx.author, "Verified ", member)
+        await channel.send(f"{ctx.author} verified {member}")
 
 
 @bot.command()
