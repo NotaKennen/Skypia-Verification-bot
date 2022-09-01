@@ -20,7 +20,7 @@ from datetime import datetime
 import json
 import os
 
-with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json')) as f:
+with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json')) as f:
     data = json.load(f)
     token = data["TOKEN"]
     redpassword = data["redpassword"]
@@ -29,7 +29,7 @@ with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/
 
 data = None
 
-with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json')) as f:
+with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json')) as f:
     data = json.load(f)
     logmode = data["logmodeconfig"]
 
@@ -58,7 +58,7 @@ async def config(ctx, config: str=None, state: str=None):
             "logmodeconfig": "True"
             }
             json_object = json.dumps(dictionary, indent=1)
-            with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json'), "w") as outfile:
+            with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json'), "w") as outfile:
                 outfile.write(json_object)
 
         elif state == "False":
@@ -67,7 +67,7 @@ async def config(ctx, config: str=None, state: str=None):
             "logmodeconfig": "False"
             }
             json_object = json.dumps(dictionary, indent=1)
-            with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json'), "w") as outfile:
+            with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json'), "w") as outfile:
                 outfile.write(json_object)
 
         else:
@@ -138,7 +138,7 @@ async def verify(ctx, member : discord.Member, age: str=None, pingable: str=None
     await member.add_roles(roleRealmMember)
     await member.add_roles(roleVerified)
     await ctx.send("Verified!")
-    with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json')) as f:
+    with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json')) as f:
         data = json.load(f)
         logmode = data["logmodeconfig"]
     if logmode == "True":
