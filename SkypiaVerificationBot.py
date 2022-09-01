@@ -161,7 +161,55 @@ async def age(ctx, member : discord.Member, age: int):
     else:
         await member.add_roles(role1317)
 
+# Moderation
+#-------------------------------------------
+# Fun/minigames
 
+@bot.command()
+async def register(ctx):
+    person = {
+    "Money": "0",
+    "Card1": "0",
+    "Card2": "0",
+    "Card3": "0"
+    }
+    json_object = json.dumps(person, indent=1)
+    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
+        outfile.write(json_object)
+    await ctx.send("You have been registered!")
+
+@bot.command()
+async def inv(ctx, member: discord.member = None):
+    if member is None:
+        member = ctx.author
+    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
+        data = json.load(f)
+        Card1 = data["Card1"]
+        Card2 = data["Card2"]
+        Card3 = data["Card3"]
+    embed=discord.Embed(title=" ", color=0xee4f4f)
+    embed.set_author(name=f"{ctx.author}'s inventory")
+    embed.add_field(name="Card1", value=Card1, inline=False)
+    embed.add_field(name="Card2", value=Card2, inline=True)
+    embed.add_field(name="Card3", value=Card3, inline=False)
+    await ctx.send(embed=embed)
+    
+@bot.command()
+async def buy(ctx, cardname: str = None):
+    if cardname is None:
+        await ctx.send("Available cards: Card1")
+    if cardname == "card1":
+        await ctx.send("Command not yet done -Memarios")
+    else: 
+        await ctx.send("Not a card! Usage: +buy (card name)")
+
+@bot.command()
+async def bal(ctx, member: discord.member = None):
+    member = ctx.author
+    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
+        data = json.load(f)
+        Cardmoney = data["Money"]
+    await ctx.send(f"You have {Cardmoney}$")
 
 bot.run(token)
 
