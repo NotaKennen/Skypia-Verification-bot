@@ -20,7 +20,7 @@ from datetime import datetime
 import json
 import os
 
-with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/data.json')) as f:
+with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/gitignorefiles/data.json')) as f:
     data = json.load(f)
     token = data["TOKEN"]
     redpassword = data["redpassword"]
