@@ -21,13 +21,5 @@ If you want to copy the code:
     "redclientid" : "reddit-client-id-here"
     
     }
- 
-4. also make a file called data.json with this code:
-
-{
-
- "logmodeconfig": "True"
- 
-}
 
 (reddit passwords etc. are needed for the +reddit command to work, due to PRAW needing it. You can just make a burner account)
