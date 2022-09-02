@@ -277,12 +277,12 @@ async def gamble(ctx, game: str=None, amount: int=None):
             Card2 = data["Card2"]
             Card3 = data["Card3"]
     reward = 0
-    if Money >= amount:
-     if game is None:
+    if game is None:
         await ctx.send("Available games: coinflip")
-     elif amount is None:
+    elif amount is None:
         await ctx.send("You need to put in an amount!")
-     else:
+    else:
+      if Money >= amount:
         if game == "coinflip":
             chances = random.randint(0, 100)
             if chances >= 50:
@@ -294,7 +294,7 @@ async def gamble(ctx, game: str=None, amount: int=None):
             Money = Money + reward
         else:
             await ctx.send(f'"{game}" is not a game!')
-    else:
+      else:
         await ctx.send("You don't have that much money!")
     person = {
     "Money": Money,
@@ -305,7 +305,36 @@ async def gamble(ctx, game: str=None, amount: int=None):
     json_object = json.dumps(person, indent=1)
     with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
         outfile.write(json_object)
-    
+
+@bot.command()
+@commands.cooldown(1, 60, commands.BucketType.user)
+async def search(ctx):
+    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
+            data = json.load(f)
+            Money = data["Money"]
+            Card1 = data["Card1"]
+            Card2 = data["Card2"]
+            Card3 = data["Card3"]
+    place = ["Garbagecan", "Couch", "Old lady's purse", "Minecraft server", "Stackoverflow thread", "Bank", "UFO"]
+    placename = (random.choice(place))
+    reward = int(random.randint(10, 70))
+    await ctx.send(f"You searched a {placename} and found {reward}$!")
+    Money = Money + reward
+    person = {
+    "Money": Money,
+    "Card1": Card1,
+    "Card2": Card2,
+    "Card3": Card3
+    }
+    json_object = json.dumps(person, indent=1)
+    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
+        outfile.write(json_object)
+
+@bot.event
+async def on_command_error(ctx, error):
+  if isinstance(error, commands.CommandOnCooldown):
+    await ctx.send(f"Mate, you can't do it that fast! Try again in {round(error.retry_after, 2)} seconds.")
+
 
 bot.run(token)
 
