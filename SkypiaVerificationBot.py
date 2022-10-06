@@ -73,7 +73,7 @@ async def config(ctx, config: str=None, state: str=None):
                 outfile.write(json_object)
 
         else:
-            await ctx.send("Setting Logmode has to be set to True or False")
+            await ctx.send("Logmode has to be set to True or False")
     else:
         await ctx.send("Invalid config option")
 
@@ -133,6 +133,17 @@ async def github(ctx):
 @bot.command(brief = 'Verifies a person')
 @commands.has_role('Server Admin')
 async def verify(ctx, member : discord.Member, age: str=None, pingable: str=None):
+    rolepings = ctx.guild.get_role(878112584761495562)
+    if pingable == "n":
+        await member.remove_roles(rolepings)
+    if pingable == "N":
+        await member.remove_roles(rolepings)
+    role18 = ctx.guild.get_role(877361391491743815)
+    role1317 = ctx.guild.get_role(877361323053285436)
+    if age >= 18:
+        await member.add_roles(role18)
+    else:
+        await member.add_roles(role1317)
     roleRealmMember = ctx.guild.get_role(862852289462534156)
     roleVerified = ctx.guild.get_role(885061510592860160)
     roleUnverified = ctx.guild.get_role(876510056051511346)
@@ -146,7 +157,6 @@ async def verify(ctx, member : discord.Member, age: str=None, pingable: str=None
     if logmode == "True":
         channel = bot.get_channel(878180311148662814)
         await channel.send(f"{ctx.author} verified {member}")
-
 
 @bot.command(brief = 'Nickname someone')
 @commands.has_role('Server Admin')
@@ -162,231 +172,6 @@ async def age(ctx, member : discord.Member, age: int):
         await member.add_roles(role18)
     else:
         await member.add_roles(role1317)
-
-# Moderation
-#-------------------------------------------
-# Fun/minigames
-
-@bot.command(brief = 'Use this command before playing the "Card game"')
-async def register(ctx):
-    person = {
-    "Money": 0,
-    "Keys": 0,
-    "Card1": 0,
-    "Card2": 0,
-    "Card3": 0
-    }
-    json_object = json.dumps(person, indent=1)
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
-        outfile.write(json_object)
-    await ctx.send("You have been registered!")
-
-@bot.command(brief = 'Shows your inventory')
-async def inv(ctx, member: discord.member = None):
-    if member is None:
-        member = ctx.author
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
-        data = json.load(f)
-        Money = data["Money"]
-        Card1 = data["Card1"]
-        Card2 = data["Card2"]
-        Card3 = data["Card3"]
-    embed=discord.Embed(title=" ", color=0xee4f4f)
-    embed.set_author(name=f"{ctx.author}'s inventory")
-    embed.add_field(name="Card1", value=Card1, inline=False)
-    embed.add_field(name="Card2", value=Card2, inline=True)
-    embed.add_field(name="Card3", value=Card3, inline=False)
-    await ctx.send(embed=embed)
-    
-@bot.command(brief = 'Allows you to buy cards')
-async def buycard(ctx, cardname: str = None):
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
-            data = json.load(f)
-            Money = data["Money"]
-            Keys = data["Keys"]
-            Card1 = data["Card1"]
-            Card2 = data["Card2"]
-            Card3 = data["Card3"]
-    Money = int(Money)
-    if cardname is None:
-        await ctx.send("Available cards: Card1, Card2, Card3 (placeholder names)")
-    elif cardname == "Card1":
-            if Money >= 500:
-                Money = Money-500
-                Card1 = int(Card1)
-                Card1 = Card1 + 1
-                person = {
-                "Money": Money,
-                "Keys": Keys,
-                "Card1": Card1,
-                "Card2": Card2,
-                "Card3": Card3
-                }
-                json_object = json.dumps(person, indent=1)
-                with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
-                    outfile.write(json_object)
-                await ctx.send("Successfully bought 1 Card1")
-            else:
-                await ctx.send("Hey poor person! You need to get 500$ to buy this item.")
-    elif cardname == "Card2":
-            if Money >= 700:
-                Money = Money-700
-                Card2 = int(Card2)
-                Card2 = Card2 + 1
-                person = {
-                "Money": Money,
-                "Keys": Keys,
-                "Card1": Card1,
-                "Card2": Card2,
-                "Card3": Card3
-                }
-                json_object = json.dumps(person, indent=1)
-                with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
-                    outfile.write(json_object)
-                await ctx.send("Successfully bought 1 Card2")
-            else:
-                await ctx.send("Hey poor person! You need to get 700$ to buy this item.")
-    elif cardname == "Card3":
-            if Money >= 1000:
-                Money = Money-1000
-                Card3 = int(Card3)
-                Card3 = Card3 + 1
-                person = {
-                "Money": Money,
-                "Keys": Keys,
-                "Card1": Card1,
-                "Card2": Card2,
-                "Card3": Card3
-                }
-                json_object = json.dumps(person, indent=1)
-                with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
-                    outfile.write(json_object)
-                await ctx.send("Successfully bought 1 Card3")
-            else:
-                await ctx.send("Hey poor person! You need to get 1000$ to buy this item.")
-    else: 
-        await ctx.send("Not a card! Usage: +buy (card name)")
-
-@bot.command(brief = 'Shows your money balance')
-async def bal(ctx, member: discord.member = None):
-    member = ctx.author
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
-        data = json.load(f)
-        Cardmoney = data["Money"]
-    await ctx.send(f"You have {Cardmoney}$")
-
-@bot.command(brief = 'Allows you to gamble with money')
-async def gamble(ctx, game: str=None, amount: int=None):
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
-            data = json.load(f)
-            Money = data["Money"]
-            Card1 = data["Card1"]
-            Card2 = data["Card2"]
-            Card3 = data["Card3"]
-            Keys = data["Keys"]
-    reward = 0
-    if game is None:
-        await ctx.send("Available games: coinflip / +gamble (game) (amount)")
-    elif amount is None:
-        await ctx.send("You need to put in an amount!")
-    else:
-      if Money >= amount:
-        if game == "coinflip":
-            chances = random.randint(0, 100)
-            if chances >= 50:
-                reward = amount
-                await ctx.send(f"You won {reward}$!")
-            else:
-                reward = reward - amount
-                await ctx.send(f"You lost {reward}$!")
-            Money = Money + reward
-        else:
-            await ctx.send(f'"{game}" is not a game!')
-      else:
-        await ctx.send("You don't have that much money!")
-    person = {
-    "Money": Money,
-    "Keys": Keys,
-    "Card1": Card1,
-    "Card2": Card2,
-    "Card3": Card3
-    }
-    json_object = json.dumps(person, indent=1)
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
-        outfile.write(json_object)
-
-@bot.command(brief = 'Searches for money, and other cool stuff')
-@commands.cooldown(1, 60, commands.BucketType.user)
-async def search(ctx):
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
-            data = json.load(f)
-            Money = data["Money"]
-            Keys = data["Keys"]
-            Card1 = data["Card1"]
-            Card2 = data["Card2"]
-            Card3 = data["Card3"]
-    place = ["a garbagecan", "a couch", "an old lady's purse", "a Minecraft server", "a Stackoverflow thread", "a bank", "an UFO", "the gas station bathroom", "your sink", "a hospital bed", "a fridge", "a college classroom", "the basement pipes", "under the bar stool"]
-    placename = (random.choice(place))
-    reward = int(random.randint(10, 70))
-    await ctx.send(f"You searched {placename} and found {reward}$!")
-    Money = Money + reward
-    person = {
-    "Money": Money,
-    "Keys": Keys,
-    "Card1": Card1,
-    "Card2": Card2,
-    "Card3": Card3
-    }
-    json_object = json.dumps(person, indent=1)
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
-        outfile.write(json_object)
-
-@bot.command(brief = 'WIP')
-async def dungeon(ctx):
-    with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json')) as f:
-        data = json.load(f)
-        Money = data["Money"]
-        Keys = data["Keys"]
-        Card1 = data["Card1"]
-        Card2 = data["Card2"]
-        Card3 = data["Card3"]
-    if Keys == 0:
-        await ctx.send("You need to get some keys first")
-    else:
-        storytext = "."
-        chance = int(random.randint(1,20))
-        if chance == 1:
-            storytext = ", but the door was trapped! You died."
-        await ctx.send(f"You enter the dungeon{storytext}")
-        Keys = Keys - 0
-        person = {
-        "Money": Money,
-        "Keys": Keys,
-        "Card1": Card1,
-        "Card2": Card2,
-        "Card3": Card3
-        }
-        json_object = json.dumps(person, indent=1)
-        with open(os.path.expanduser(f'~/Downloads/Code Projects/Skypia Verification bot/Card game/People/{ctx.author}.json'), "w") as outfile:
-            outfile.write(json_object)
-
-@bot.command(brief = 'DEV COMMAND')
-async def devgreet(ctx):
-    await ctx.send("Say hello!")
-    try:
-        def check(m):
-            return m.content == "hello" and m.channel == ctx.channel
-
-        msg = await bot.wait_for("message", check=lambda message: message.author == ctx.author, timeout=5)
-        await ctx.send(f"Hello {msg.author}!")
-    except asyncio.TimeoutError:
-        await ctx.send("Too late!")
-
-@bot.event
-async def on_command_error(ctx, error):
-  if isinstance(error, commands.CommandOnCooldown):
-    await ctx.send(f"Mate, you can't do it that fast! Try again in {round(error.retry_after, 2)} seconds.")
-
 
 bot.run(token)
 
