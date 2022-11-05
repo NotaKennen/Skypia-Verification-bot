@@ -21,8 +21,9 @@ import json
 import os
 import random
 import asyncio
+import translators as ts
 
-with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/gitignorefiles/data.json')) as f:
+with open(os.path.expanduser('~/Documents/Code Projects/Skypia Verification bot/gitignorefiles/data.json')) as f:
     data = json.load(f)
     token = data["TOKEN"]
     redpassword = data["redpassword"]
@@ -31,7 +32,7 @@ with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/
 
 data = None
 
-with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json')) as f:
+with open(os.path.expanduser('~/Documents/Code Projects/Skypia Verification bot/config.json')) as f:
     data = json.load(f)
     logmode = data["logmodeconfig"]
 
@@ -60,7 +61,7 @@ async def config(ctx, config: str=None, state: str=None):
             "logmodeconfig": "True"
             }
             json_object = json.dumps(dictionary, indent=1)
-            with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json'), "w") as outfile:
+            with open(os.path.expanduser('~/Documents/Code Projects/Skypia Verification bot/config.json'), "w") as outfile:
                 outfile.write(json_object)
 
         elif state == "False":
@@ -69,7 +70,7 @@ async def config(ctx, config: str=None, state: str=None):
             "logmodeconfig": "False"
             }
             json_object = json.dumps(dictionary, indent=1)
-            with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json'), "w") as outfile:
+            with open(os.path.expanduser('~/Documents/Code Projects/Skypia Verification bot/config.json'), "w") as outfile:
                 outfile.write(json_object)
 
         else:
@@ -151,7 +152,7 @@ async def verify(ctx, member : discord.Member, age: str=None, pingable: str=None
     await member.add_roles(roleRealmMember)
     await member.add_roles(roleVerified)
     await ctx.send("Verified!")
-    with open(os.path.expanduser('~/Downloads/Code Projects/Skypia Verification bot/config.json')) as f:
+    with open(os.path.expanduser('~/Documents/Code Projects/Skypia Verification bot/config.json')) as f:
         data = json.load(f)
         logmode = data["logmodeconfig"]
     if logmode == "True":
@@ -172,6 +173,27 @@ async def age(ctx, member : discord.Member, age: int):
         await member.add_roles(role18)
     else:
         await member.add_roles(role1317)
+
+@bot.command(brief = "A command to translate text to english, a pretty slow command")
+async def translate(ctx, *, text: str=None):
+    if text is None:
+        await ctx.send("You need to input the text to translate")
+    else:
+        try:
+            await ctx.message.delete()
+            translation = ts.google(text)
+            await ctx.send(f'{ctx.author}: "{translation}" (orig: "{text}")')
+        except:
+            await ctx.send(f"Sorry, translation failed ({ctx.author})")
+
+@bot.command(brief = "Translates the message that was replied to with the command")
+async def transthis(ctx):
+    try:
+        message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+        translation = ts.google(message.content)
+        await ctx.reply(f'> "{translation}"')
+    except:
+        await ctx.reply("There was no message replied (or something broke, idk I'm just the bot)")
 
 bot.run(token)
 
