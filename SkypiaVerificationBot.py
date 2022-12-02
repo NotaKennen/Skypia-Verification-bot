@@ -193,7 +193,7 @@ async def transthis(ctx):
         translation = ts.google(message.content)
         await ctx.reply(f'> "{translation}"')
     except:
-        await ctx.reply("There was no message replied (or something broke, idk I'm just the bot)")
+        await ctx.reply("There was no message replied to (or something broke, idk I'm just the bot)")
 
 bot.run(token)
 
