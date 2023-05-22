@@ -23,3 +23,6 @@ If you want to copy the code:
     }
 
 (reddit passwords etc. are needed for the +reddit command to work, due to PRAW needing it. You can just make a burner account)
+
+
+Quick disclaimer from the future: it's my first bot and it sucks ass
